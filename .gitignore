@@ -5,6 +5,15 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Python
+__pycache__/
+*.py[cod]
+.coverage
+.pytest_cache/
+
 # Logs / temp
 *.log
 *.tmp
+
+# Local generated learning state; commit selected redacted artifacts explicitly
+.agent-learning/

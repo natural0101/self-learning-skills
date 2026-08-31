@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "candidate_id": "cand-REPLACE",
+  "candidate_version": 1,
+  "subject_hash": "REPLACE",
+  "approval_nonce": "REPLACE",
+  "requested_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "decision": "approve",
+  "approver": "REPLACE authenticated owner/governor ID",
+  "authority_ref": "REPLACE stable host review receipt/change ID",
+  "approved_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "signature": "REPLACE HMAC-SHA256 hex over all other fields"
+}

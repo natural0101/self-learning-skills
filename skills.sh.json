@@ -3,9 +3,11 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Self-learning",
-      "description": "A self-improving meta-skill: recognize a hard-won golden path in a session and harvest it into a reusable skill for next time.",
-      "skills": ["self-learning"]
+      "title": "Governed continuous learning",
+      "description": "Evidence-driven agent improvement with quarantined candidates, triple review, probation, reliability, owner governance, and rollback.",
+      "skills": [
+        "self-learning"
+      ]
     }
   ]
 }

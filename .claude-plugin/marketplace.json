@@ -2,27 +2,29 @@
   "name": "self-learning-skills",
   "id": "self-learning-skills",
   "owner": {
-    "name": "kulaxyz"
+    "name": "natural0101"
   },
   "metadata": {
-    "description": "A self-improving Claude Code skill: recognize hard-won \"golden paths\" in a session and harvest them into reusable skills for next time.",
-    "version": "1.0.0"
+    "description": "A governed continuous-learning lifecycle for AI agents: evidence, triple review, probation, measured reuse, refinement, and rollback.",
+    "version": "2.0.0"
   },
   "plugins": [
     {
       "name": "self-learning",
       "source": "./",
-      "description": "Capture a hard-won golden path from the current session as a reusable Agent Skill, so future sessions start already knowing it.",
-      "version": "1.0.0",
+      "description": "Make agents improve from judged work through quarantined candidates, independent reviews, probation, lifecycle measurement, and owner-governed activation.",
+      "version": "2.0.0",
       "author": {
-        "name": "kulaxyz"
+        "name": "natural0101"
       },
       "keywords": [
         "self-learning",
-        "skills",
+        "continuous-improvement",
+        "agent-skills",
         "memory",
-        "meta-skill",
-        "workflow"
+        "evaluation",
+        "governance",
+        "rollback"
       ],
       "category": "workflow"
     }

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "lesson_id": "lesson-REPLACE",
+  "candidate_id": "cand-REPLACE",
+  "candidate_version": 1,
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "target": "project-skill",
+  "name": "replace-skill-name",
+  "scope": {
+    "positive_boundary": [
+      "REPLACE exact applicable environment/task/failure signature"
+    ],
+    "negative_boundary": [
+      "REPLACE similar case where this must not apply"
+    ],
+    "scope_reason": "REPLACE why project, world, person, or global"
+  },
+  "sources": [
+    {
+      "event_id": "REPLACE",
+      "type": "test|artifact|owner-verdict|trusted-specification",
+      "reference": "REPLACE safe reference",
+      "content_hash": "sha256:REPLACE",
+      "trust": "trusted|mixed|untrusted",
+      "supports": [
+        "REPLACE exact claim"
+      ]
+    }
+  ],
+  "failure_pattern": "REPLACE named failure/capability gap",
+  "dead_ends": [
+    {
+      "attempt": "REPLACE",
+      "observed_result": "REPLACE",
+      "ruled_out_reason": "REPLACE"
+    }
+  ],
+  "durable_rules": [
+    "REPLACE reusable procedure rule"
+  ],
+  "one_off_facts_excluded": [
+    "REPLACE transient/task-specific fact intentionally omitted"
+  ],
+  "secret_redactions": [
+    "REPLACE env/vault/tool pointer; no value"
+  ],
+  "baseline": {
+    "method": "no-skill|prior-version|failing-test|owner-rubric",
+    "result": "REPLACE",
+    "evidence": "REPLACE"
+  },
+  "evaluation_cases": [
+    {
+      "id": "positive-1",
+      "kind": "positive",
+      "input_reference": "REPLACE",
+      "expected": "REPLACE",
+      "result": "REPLACE"
+    },
+    {
+      "id": "negative-1",
+      "kind": "negative",
+      "input_reference": "REPLACE",
+      "expected": "REPLACE",
+      "result": "REPLACE"
+    },
+    {
+      "id": "regression-1",
+      "kind": "regression",
+      "input_reference": "REPLACE",
+      "expected": "REPLACE",
+      "result": "REPLACE"
+    },
+    {
+      "id": "safety-1",
+      "kind": "safety",
+      "input_reference": "REPLACE",
+      "expected": "REPLACE",
+      "result": "REPLACE"
+    }
+  ],
+  "expected_gain": "REPLACE measurable improvement",
+  "risk": "low|medium|high|critical",
+  "protected_domains": [],
+  "rollback": {
+    "previous_version": "REPLACE",
+    "trigger": "REPLACE",
+    "procedure": "REPLACE"
+  },
+  "reviews": {
+    "evidence": null,
+    "evaluation": null,
+    "safety": null
+  },
+  "owner_approval_required": true,
+  "approval_mode": "host-receipt",
+  "subject_hash": "REPLACE sealed candidate subject hash",
+  "approval_nonce": "REPLACE one-time nonce",
+  "activation_state": "quarantined"
+}

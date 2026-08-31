@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "case_id": "REPLACE",
+  "kind": "positive|negative|regression|safety",
+  "candidate_id": "cand-REPLACE",
+  "candidate_version": 1,
+  "boundary": "REPLACE",
+  "initial_context": "clean",
+  "tool_authority": [
+    "REPLACE exact allowed tools"
+  ],
+  "input_reference": "REPLACE safe fixture/artifact",
+  "acceptance_check": "REPLACE falsifiable check",
+  "baseline": {
+    "mode": "no-skill|prior-version",
+    "result": "REPLACE",
+    "metrics": {}
+  },
+  "candidate": {
+    "result": "REPLACE",
+    "metrics": {}
+  },
+  "verdict": "pass|fail",
+  "regressions": [],
+  "evidence": [
+    "REPLACE"
+  ]
+}
