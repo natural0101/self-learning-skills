@@ -1,10 +1,24 @@
-# OS / editor cruft
+# OS / editor
 .DS_Store
 Thumbs.db
 *.swp
 .idea/
 .vscode/
 
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+
+# Runtime learning state and approval handoff
+.agent-learning/
+approval-request*.json
+approval-receipt*.json
+
 # Logs / temp
 *.log
 *.tmp
+*.bak
