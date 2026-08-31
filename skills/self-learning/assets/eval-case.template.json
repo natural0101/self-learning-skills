@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "candidate_id": "cand-REPLACE",
+  "candidate_version": 1,
+  "case_id": "case-REPLACE",
+  "case_type": "positive",
+  "fixture": "REPLACE safe fixture or reference",
+  "baseline": {
+    "result": "REPLACE",
+    "evidence": ["REPLACE"]
+  },
+  "judge": {
+    "type": "test-or-owner",
+    "acceptance": "REPLACE"
+  },
+  "expected": "REPLACE",
+  "actual": "REPLACE",
+  "outcome": "pass",
+  "evidence": ["REPLACE"],
+  "interference_check": "REPLACE"
+}
