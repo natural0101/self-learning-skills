@@ -3,8 +3,8 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Self-learning",
-      "description": "A self-improving meta-skill: recognize a hard-won golden path in a session and harvest it into a reusable skill for next time.",
+      "title": "Governed self-learning",
+      "description": "Turn observable agent experience into exact, reviewed, probation-tested, owner-governed skills with monitoring and rollback.",
       "skills": ["self-learning"]
     }
   ]
