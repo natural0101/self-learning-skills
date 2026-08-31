@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "lesson_id": "lesson-REPLACE",
+  "candidate_id": "cand-REPLACE",
+  "candidate_version": 1,
+  "target": "project-skill",
+  "scope": "project",
+  "scope_reason": "REPLACE",
+  "source_event_ids": ["REPLACE"],
+  "failure_pattern": "REPLACE",
+  "passing_or_reproduced_check": "REPLACE",
+  "ruled_out_dead_ends": ["REPLACE"],
+  "applicability": ["REPLACE"],
+  "exclusions": ["REPLACE"],
+  "baseline": "REPLACE",
+  "replay_cases": ["REPLACE"],
+  "one_off_facts_excluded": ["REPLACE"],
+  "secret_redactions": ["env:REPLACE"],
+  "artifact_hash": "sha256-REPLACE",
+  "subject_hash": "sha256-REPLACE",
+  "activation_requires_external_approval": true,
+  "rollback_condition": "REPLACE"
+}
