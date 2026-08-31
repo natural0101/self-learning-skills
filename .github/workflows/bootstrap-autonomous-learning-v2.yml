@@ -1,0 +1,79 @@
+name: Bootstrap autonomous learning v2
+
+on:
+  push:
+    branches:
+      - feat/autonomous-learning-v2
+    paths:
+      - ".bootstrap/**"
+      - ".github/workflows/bootstrap-autonomous-learning-v2.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify and unpack payload
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64
+          import hashlib
+          import io
+          import tarfile
+          from pathlib import Path
+
+          root = Path.cwd().resolve()
+          chunks = sorted((root / ".bootstrap").glob("payload-*.b64"))
+          if len(chunks) != 7:
+              raise SystemExit(f"expected 7 chunks, found {len(chunks)}")
+
+          encoded = "".join(
+              path.read_text(encoding="utf-8").strip() for path in chunks
+          )
+          payload = base64.b64decode(encoded, validate=True)
+          digest = hashlib.sha256(payload).hexdigest()
+          expected = "7b172991ebcf13ea45e77a71710c7e754f0de568c2b1fe7fcfda08681bee4f12"
+          if digest != expected:
+              raise SystemExit(f"payload digest mismatch: {digest}")
+
+          with tarfile.open(fileobj=io.BytesIO(payload), mode="r:gz") as archive:
+              members = archive.getmembers()
+              for member in members:
+                  rel = Path(member.name)
+                  if rel.is_absolute() or ".." in rel.parts:
+                      raise SystemExit(f"unsafe archive member: {member.name}")
+                  if member.issym() or member.islnk():
+                      raise SystemExit(f"archive links are forbidden: {member.name}")
+                  target = (root / rel).resolve()
+                  if target != root and root not in target.parents:
+                      raise SystemExit(
+                          f"archive member escapes repository: {member.name}"
+                      )
+              archive.extractall(root)
+          PY
+          rm -rf .bootstrap
+          rm -f .github/workflows/bootstrap-autonomous-learning-v2.yml
+
+      - name: Validate implementation
+        run: |
+          python -m compileall -q skills/self-learning/scripts scripts tests
+          python -m unittest discover -s tests -v
+          python skills/self-learning/scripts/learning_cycle.py validate-skill skills/self-learning
+          python scripts/validate_repository.py
+
+      - name: Commit implementation
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: add governed autonomous learning lifecycle"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
