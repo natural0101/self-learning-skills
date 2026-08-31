@@ -1,145 +1,280 @@
-# self-learning-skills
+# self-learning-skills — governed autonomous learning
 
-**A self-improving skill for AI coding agents.** Works with Claude Code, Cursor,
-and any agent that reads an `AGENTS.md` / standing-instructions file.
+A hardened fork of `Kulaxyz/self-learning-skills` for AI agents that must improve
+future task performance without turning every guess into permanent instructions.
 
-Every session you do hard debugging or rediscover the same thing — *how do I
-reach the prod DB? where do the creds live? what's the deploy command? how do I
-verify this live?* — and that hard-won knowledge evaporates when the session
-ends. The next session starts from zero and re-learns it.
+The original project captured hard-won “golden paths.” This fork adds the missing
+lifecycle around them:
 
-**self-learning** fixes that. It teaches your agent to recognize the moment it
-has just earned a reusable **golden path** and persist it where the tool will
-auto-load it next time — so the next session starts already knowing the route
-instead of rediscovering it.
+```text
+experience → candidate → exact artifact seal → 3 reviews → probation
+           → external approval → activation → monitoring → revision/rollback
+```
 
-It's a *meta-skill*: it doesn't do the work, it captures **how** the work got
-done — including the **failures**, since skipping a known dead-end next session
-is often worth more than the win itself.
+It works as an Agent Skill, Cursor rule, or portable `AGENTS.md` instruction set.
+The included Python helper is standard-library only and runs on Windows, macOS, and
+Linux.
 
-## The loop (same everywhere)
+## What “self-learning” means here
 
-1. **Recognize the moment** — a task that only worked after several tries, a
-   non-obvious command, a project fact you didn't know up front, an operational
-   workflow likely to recur, or you simply saying *"remember this"*.
-2. **Capture it, no prompt needed** — it acts on the cue immediately, picks the
-   scope/name itself, and tells you afterward. The *procedure* is captured (not
-   a one-off answer), plus a "what didn't work" note.
-3. **Reuse** — next session the entry loads automatically, by skill/rule
-   description or because the instructions file is always read.
+The agent can:
 
-What differs per tool is only *where* knowledge is persisted and *how* it's
-auto-loaded:
+- retrieve relevant accepted lessons before similar work;
+- capture observable outcomes, failures, corrections, and dead-ends;
+- rank repeated uncovered capability gaps;
+- draft or revise reusable procedures;
+- bind reviews to exact artifact bytes;
+- test candidates in probation;
+- activate only through configured governance;
+- monitor reliability and archive regressions.
 
-| Tool | Persists golden paths to | Auto-loads via |
-|---|---|---|
-| Claude Code, Codex, Agent Skills clients | a new `skills/<name>/SKILL.md` | skill description matching |
-| Cursor | a new `.cursor/rules/learned/<name>.mdc` | rule description / globs |
-| Zed, Aider, Gemini CLI, … | `AGENTS.md` (or project notes/memory) | always-read instructions |
+It does **not** fine-tune model weights, invent authority, approve itself, or run an
+unbounded background objective.
+
+## Why the lifecycle matters
+
+Saving every reflection creates noisy, contradictory, over-general rules. A useful
+learning system must distinguish:
+
+- unfinished work from durable knowledge;
+- one-line facts from procedures;
+- candidate hypotheses from accepted behavior;
+- local evidence from global applicability;
+- formatting checks from outcome evaluation;
+- agent proposals from owner authority.
+
+The architecture is documented in
+[`skills/self-learning/references/architecture.md`](skills/self-learning/references/architecture.md).
+Research sources and design synthesis are in
+[`research-foundations.md`](skills/self-learning/references/research-foundations.md).
 
 ## Install
 
-### `npx` — recommended (works with 70+ agents)
-
-Uses the community [`skills`](https://github.com/vercel-labs/skills) CLI, which
-installs into whatever agents it detects — Claude Code, Cursor, Codex, Cline,
-OpenCode, and more:
+### Agent Skills CLI
 
 ```bash
-npx skills add kulaxyz/self-learning-skills                 # this project (auto-detects agents)
-npx skills add kulaxyz/self-learning-skills -g              # global — all your projects
-npx skills add kulaxyz/self-learning-skills -a claude-code  # a specific agent
+npx skills add natural0101/self-learning-skills
 ```
 
-Try it once without installing:
+Global install:
 
 ```bash
-npx skills use kulaxyz/self-learning-skills --skill self-learning | claude
+npx skills add natural0101/self-learning-skills -g
 ```
 
 ### Claude Code plugin
 
-```
-/plugin marketplace add kulaxyz/self-learning-skills
+```text
+/plugin marketplace add natural0101/self-learning-skills
 /plugin install self-learning@self-learning-skills
 ```
 
 ### Manual
 
-<details>
-<summary>Copy the files into place yourself</summary>
-
 ```bash
-git clone https://github.com/kulaxyz/self-learning-skills
+git clone https://github.com/natural0101/self-learning-skills.git
 
-# Claude Code — global (or into a project's .claude/skills/ to share via git)
-cp -R self-learning-skills/skills/self-learning ~/.claude/skills/
+# Claude Code / Agent Skills clients
+cp -R self-learning-skills/skills/self-learning .claude/skills/
 
-# Cursor — auto-loads .cursor/rules/ (harvested rules land in .cursor/rules/learned/)
+# Cursor
 mkdir -p .cursor/rules
 cp self-learning-skills/.cursor/rules/self-learning.mdc .cursor/rules/
 
-# Any AGENTS.md agent (Codex, Zed, Aider, Gemini CLI, …)
-curl https://raw.githubusercontent.com/kulaxyz/self-learning-skills/main/AGENTS.md >> AGENTS.md
+# Any agent that reads AGENTS.md
+cat self-learning-skills/AGENTS.md >> AGENTS.md
 ```
-</details>
 
-## Triage: skill, memory, or skip?
+Use your agent's actual skills directory when it differs.
 
-It won't bloat your config with one-liners. Each lesson is routed:
+## Quick start: auditable lifecycle
 
-| Lesson | Where it goes |
+Initialize project-local state:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py init
+```
+
+Record an observable result:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py record \
+  --task-id ci-184 \
+  --outcome fail \
+  --summary "stale build cache reproduced" \
+  --evidence "ci:run-184" \
+  --failure-pattern "stale build cache causes phantom type errors" \
+  --dead-end "rerunning the same incremental build preserved the stale cache"
+```
+
+Rank recurring gaps:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py gaps
+```
+
+Create a quarantined candidate bound to exact bytes:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py candidate \
+  --name clear-stale-build-cache \
+  --source-event <event-id> \
+  --failure-pattern "stale build cache causes phantom type errors" \
+  --verification "clean build and targeted tests pass" \
+  --boundary "Use only after the cache signature is observed; not as a default first step" \
+  --expected-gain "skip one failed rebuild cycle" \
+  --skill-path skills/clear-stale-build-cache
+```
+
+Submit three exact-version reviews:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py review \
+  --candidate <candidate-id> --kind evidence --verdict pass \
+  --reviewer evidence-reviewer --independent \
+  --notes "source receipts, scope, and provenance pass"
+
+python skills/self-learning/scripts/learning_cycle.py review \
+  --candidate <candidate-id> --kind evaluation --verdict pass \
+  --reviewer evaluation-reviewer --independent \
+  --notes "baseline, held-out replay, and non-trigger cases pass"
+
+python skills/self-learning/scripts/learning_cycle.py review \
+  --candidate <candidate-id> --kind safety --verdict pass \
+  --reviewer safety-reviewer --independent \
+  --notes "secret, authority, injection, and rollback checks pass"
+```
+
+Promote to probation and record judged trials:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py promote --candidate <candidate-id>
+python skills/self-learning/scripts/learning_cycle.py usage \
+  --candidate <candidate-id> --outcome pass --evidence "eval:case-1"
+```
+
+Every artifact or semantic change must go through `revise`; old reviews and approval
+are invalidated automatically.
+
+## External approval
+
+Default configuration uses `host-receipt` mode. The agent creates a request:
+
+```bash
+python skills/self-learning/scripts/learning_cycle.py approval-request \
+  --candidate <candidate-id> --output approval-request.json
+```
+
+A host/owner-controlled process signs it with a secret unavailable to the agent:
+
+```bash
+SELF_LEARNING_APPROVAL_KEY='host-only-value' \
+python skills/self-learning/scripts/learning_cycle.py sign-approval \
+  --request approval-request.json \
+  --approver owner-42 \
+  --authority-ref owner-ui:approval-17 \
+  --output approval-receipt.json
+```
+
+The receipt is then recorded:
+
+```bash
+SELF_LEARNING_APPROVAL_KEY='host-only-value' \
+python skills/self-learning/scripts/learning_cycle.py approve \
+  --candidate <candidate-id> --receipt approval-receipt.json
+```
+
+Do not expose the HMAC key to the agent. Strong deployments should replace the
+reference receipt with a host API or public-key approval and make learning state
+host-owned. `local-manual` mode is available only for explicitly configured
+single-user experiments and is not a secure agent approval boundary.
+
+## Lifecycle commands
+
+| Command | Purpose |
 |---|---|
-| A multi-step, reusable **procedure/workflow** | a new skill / rule |
-| A single **fact or one-line correction** | lightweight notes/memory (e.g. a `MEMORY.md`) |
-| A genuine **one-off** | skipped |
+| `init` | create state and default policy |
+| `configure` | explicit operator config update with ledger receipt |
+| `record` | append observable task experience |
+| `gaps` | rank recurring uncovered failure patterns |
+| `candidate` | create exact-artifact quarantined candidate |
+| `review` | submit evidence/evaluation/safety review |
+| `promote` | start probation after all reviews pass |
+| `usage` | record judged probation/active use and reliability |
+| `approval-request` | emit exact hashes for external approval |
+| `sign-approval` | operator-only reference signer |
+| `approve` | record signed or explicit local-manual approval |
+| `revise` | seal new version and invalidate all old gates |
+| `archive` | remove candidate from use, preserve history |
+| `next-actions` | show exact lifecycle work currently needed |
+| `verify-ledger` | verify local event hash chain |
+| `audit` | audit artifacts, gates, probation, and activation |
+| `validate-skill` | validate Agent Skill structure/safety markers |
+| `report` | generate a human-readable lifecycle report |
 
-## Promotion rule (don't enshrine guesses)
+State defaults to `.agent-learning/`, which is ignored by git. Commit only reviewed
+skill artifacts and safe receipts intended for team sharing.
 
-Triage decides *granularity*; the promotion rule decides *confidence*. A skill is
-authoritative — the next session trusts it without re-deriving it — so a session
-is only promoted to a skill when **all three** hold:
+## Safety defaults
 
-1. **A passing check** — the path was actually verified (a test passed, a clean
-   exit, a green build, a reproduced repro). "Seemed to work" doesn't count.
-2. **A named failure pattern** — the failure it avoids or diagnoses, named.
-3. **At least one ruled-out dead-end** — a concrete approach tried and eliminated.
+- three distinct independent review identities;
+- exact artifact and semantic hashes on reviews/approval;
+- symlink and candidate-ID path traversal rejection;
+- secret-pattern blocking;
+- probation before activation;
+- owner/governor approval by default;
+- protected domains never auto-activate;
+- conservative smoothed reliability;
+- failure-burst and low-reliability archive;
+- revision invalidates every old gate;
+- no private reasoning persistence;
+- no always-running curriculum.
 
-Miss any one and it stays a tentative memory note (or is skipped) rather than a
-skill. This keeps confident-but-unverified guesses out of the skill set.
-_(Promotion rule suggested by community feedback.)_
+See [`SECURITY.md`](SECURITY.md) for the trust model and limitations.
 
-## Safety
+## TeamON One
 
-Harvested skills/rules get committed and shared, so this is built to **never
-write secret values** — no passwords, tokens, connection strings, or API keys.
-It records only *where* to find a secret (env var name, a client/selector
-function, an MCP tool, a secret manager). Reproducing a secret into a shared
-file leaks it.
+The TeamON profile preserves One's existing ownership model:
 
-## Repo layout
+- Learning is a governed transition, not a new runtime/store/service.
+- Context MCP remains the only generic lazy retrieval plane.
+- Pending lessons stay outside Context until owner acceptance.
+- Narrow lessons apply only to the exact selected World.
+- Practice runs through owner-created Tasks and isolated WorkRuns.
+- Active skills enter exact immutable checksum-verified composition.
 
+Read [`skills/self-learning/references/teamon-one.md`](skills/self-learning/references/teamon-one.md).
+
+## Validation
+
+```bash
+python -m compileall -q skills/self-learning/scripts
+python -m unittest discover -s tests -v
+python skills/self-learning/scripts/learning_cycle.py validate-skill \
+  skills/self-learning --harvested
 ```
-self-learning-skills/
-├── AGENTS.md                          # generic, cross-tool version of the loop
-├── skills.sh.json                     # registry manifest for `npx skills` / skills.sh
-├── .claude-plugin/
-│   └── marketplace.json               # Claude Code plugin manifest
-├── skills/
-│   └── self-learning/                 # Agent Skills standard (Claude Code + clients)
-│       ├── SKILL.md                   # recognize-the-moment + harvest procedure
-│       ├── references/
-│       │   └── skill-authoring.md     # condensed spec the writer loads to author a good skill
-│       └── assets/
-│           └── SKILL.template.md      # fill-in template for harvested skills
-└── .cursor/
-    └── rules/
-        ├── self-learning.mdc          # Cursor adapter (always-applied rule)
-        └── learned/                   # harvested Cursor rules land here
+
+CI runs the suite on Ubuntu and Windows with supported Python versions.
+
+## Repository layout
+
+```text
+.
+├── AGENTS.md
+├── .cursor/rules/self-learning.mdc
+├── skills/self-learning/
+│   ├── SKILL.md
+│   ├── scripts/learning_cycle.py
+│   ├── references/
+│   └── assets/
+├── tests/test_learning_cycle.py
+├── docs/reviews/
+└── .github/workflows/validate.yml
 ```
 
-Built on the open [Agent Skills](https://agentskills.io) standard.
+## Attribution
 
-## License
-
-[MIT](LICENSE) © kulaxyz
+Forked from [`Kulaxyz/self-learning-skills`](https://github.com/Kulaxyz/self-learning-skills)
+and released under the existing MIT license. The original golden-path concept and
+upstream authorship remain credited; the governed lifecycle, evaluation, artifact
+binding, approval, curriculum, tests, and TeamON profile are fork additions.

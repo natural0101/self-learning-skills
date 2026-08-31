@@ -1,59 +1,67 @@
 ---
-name: REPLACE-with-skill-name-matching-this-directory
+name: replace-with-directory-name
 description: >
-  REPLACE. One short paragraph (≤1024 chars). Say WHAT the skill does AND WHEN
-  to use it. Use imperative phrasing ("Use this skill when…"), be pushy about
-  trigger situations, and list contexts even when the user won't name the
-  domain. Match user intent, not internals.
+  Use this skill when REPLACE with the task intent, trigger conditions, and the
+  most important exclusion. State what it enables and when it must load.
 license: MIT
 metadata:
   author: REPLACE
-  version: "1.0"
+  version: "1.0.0"
 ---
 
-# REPLACE — title of the golden path
+# REPLACE title
 
-One or two sentences: what this captures and the situation it's for.
+One sentence describing the reusable procedure.
 
-<!-- Promotion rule: fill BOTH lines. If you can't, this shouldn't be a skill. -->
-**Failure pattern:** REPLACE — the failure this path avoids or diagnoses.
-**Verified by:** REPLACE — the passing check that confirmed it (test passed, clean
-exit, green build, reproduced repro). Not "seemed to work".
+**Failure pattern:** REPLACE the named recurring failure/capability gap.
+**Verified by:** REPLACE the passing or reproducible failing check and evidence ref.
 
-## When to use this
+## Applicability boundary
 
-- REPLACE: the concrete trigger(s) — the recurring task or situation this serves.
+Use when:
+
+- REPLACE positive trigger.
+
+Do not use when:
+
+- REPLACE similar-looking but excluded case.
+- REPLACE stop/escalation condition.
 
 ## Procedure
 
-<!-- Teach the METHOD, not a one-off answer. Be exact for fragile/ordered steps;
-     give freedom (and say why) where several approaches work. Default, not menu. -->
+1. REPLACE first exact step.
+2. REPLACE required ordered step and safe configuration pointer.
+3. REPLACE validation loop.
+4. REPLACE output/receipt.
 
-- [ ] 1. REPLACE — first step (exact command / path if fragile).
-- [ ] 2. REPLACE — next step, with the required order if it matters.
-- [ ] 3. REPLACE — how to verify it worked.
+## Evaluation
 
-### Example
+**Baseline:** REPLACE current outcome without this candidate.
 
-```
-REPLACE — a short, real input → command → expected output, if it helps.
-```
+| Case | Type | Input/fixture | Judge | Expected |
+|---|---|---|---|---|
+| REPLACE | positive | REPLACE | REPLACE | REPLACE |
+| REPLACE | edge | REPLACE | REPLACE | REPLACE |
+| REPLACE | negative/non-trigger | REPLACE | REPLACE | skill does not trigger |
+| REPLACE | interference | unrelated task | REPLACE | no regression |
 
 ## Gotchas
 
-<!-- The highest-value section. Concrete corrections to mistakes that WILL happen
-     otherwise — not generic advice. Record where secrets live, never their value. -->
+- REPLACE non-obvious correction.
+- Secrets live at `env:REPLACE` / approved secret source; never copy the value.
 
-- REPLACE — a non-obvious fact that defies the reasonable assumption.
-- REPLACE — where creds/config live (env var name, selector fn, MCP tool, vault),
-  NEVER the secret value itself.
+## What did not work
 
-## What didn't work
+- REPLACE ruled-out approach and why it failed.
 
-<!-- Required by the promotion rule: list at least one approach you ruled out and
-     WHY, so the next session skips the dead-end instead of re-discovering it. -->
+## Provenance
 
-- REPLACE — approach that looked right but failed, and the reason.
+- Source event(s): `REPLACE`
+- Candidate/version: `REPLACE`
+- Artifact/subject hash: `REPLACE`
+- Evidence receipts: `REPLACE`
 
-<!-- Optional: move long reference material to references/ and templates to
-     assets/, and tell the reader WHEN to load each. Keep this file < 500 lines. -->
+## Rollback
+
+Archive or revise this version when REPLACE concrete failure, staleness, or safety
+condition occurs. Restore REPLACE last known-good version/checksum.

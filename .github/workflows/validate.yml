@@ -1,0 +1,60 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Compile helper
+        run: python -m compileall -q skills/self-learning/scripts
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate self-learning skill
+        run: >-
+          python skills/self-learning/scripts/learning_cycle.py
+          validate-skill skills/self-learning --harvested
+
+      - name: Validate JSON assets and manifests
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          paths = [Path("skills.sh.json"), Path(".claude-plugin/marketplace.json")]
+          paths.extend(Path("skills/self-learning/assets").glob("*.json"))
+          for path in paths:
+              json.loads(path.read_text(encoding="utf-8"))
+              print(f"valid JSON: {path}")
+
+      - name: Empty-workspace lifecycle audit
+        run: python skills/self-learning/scripts/learning_cycle.py init --root .ci-learning
+
+      - name: Audit initialized workspace
+        run: python skills/self-learning/scripts/learning_cycle.py audit --root .ci-learning
+
+      - name: Remove smoke-test state
+        if: always()
+        shell: python
+        run: |
+          import shutil
+          shutil.rmtree(".ci-learning", ignore_errors=True)

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "require_independent_reviews": true,
+  "auto_activate_low_risk": false,
+  "require_owner_approval_for_activation": true,
+  "approval_mode": "host-receipt",
+  "approval_hmac_env": "SELF_LEARNING_APPROVAL_KEY",
+  "probation_min_trials": 3,
+  "activation_reliability": 0.8,
+  "archive_min_trials": 5,
+  "archive_reliability": 0.35,
+  "failure_burst_limit": 3,
+  "max_active_skills": 100,
+  "allowed_auto_activation_scopes": ["project"],
+  "protected_domains": [
+    "identity",
+    "mission",
+    "authority",
+    "permissions",
+    "credentials",
+    "security-policy",
+    "billing",
+    "production-write",
+    "learning-governance"
+  ]
+}
