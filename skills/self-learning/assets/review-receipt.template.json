@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "review_id": "review-REPLACE",
+  "candidate_id": "cand-REPLACE",
+  "candidate_version": 1,
+  "subject_hash": "REPLACE",
+  "artifact_hash": "REPLACE",
+  "kind": "evidence",
+  "verdict": "pass",
+  "reviewer": "host-controlled-reviewer-id",
+  "independent": true,
+  "notes": "REPLACE specific findings",
+  "evidence": ["REPLACE safe receipt reference"],
+  "timestamp": "1970-01-01T00:00:00Z"
+}
