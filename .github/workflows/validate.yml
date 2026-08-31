@@ -1,0 +1,44 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.10", "3.13"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile lifecycle helper
+        run: python -m compileall -q skills/self-learning/scripts scripts
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate core skill
+        run: python skills/self-learning/scripts/learning_cycle.py validate-skill skills/self-learning
+
+      - name: Validate repository metadata and links
+        run: python scripts/validate_repository.py
+
+      - name: Validate JSON assets
+        run: python -c "import json, pathlib; files=list(pathlib.Path('.').rglob('*.json')); [json.loads(p.read_text(encoding='utf-8')) for p in files]; print(f'validated {len(files)} json files')"
+
+      - name: Verify clean example lifecycle
+        run: >-
+          python skills/self-learning/scripts/learning_cycle.py init
+          --root .ci-learning
